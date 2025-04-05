@@ -1,76 +1,48 @@
-#include <iostream>
-#include <cstdlib>
 #include "equal-paths.h"
+#include <iostream>
 using namespace std;
 
-
-Node* a;
-Node* b;
-Node* c;
-Node* d;
-Node* e;
-Node* f;
-
-void setNode(Node* n, int key, Node* left=NULL, Node* right=NULL)
-{
-  n->key = key;
-  n->left = left;
-  n->right = right;
+Node* createLeaf() {
+    Node* leaf = new Node{0, nullptr, nullptr};
+    leaf->left = nullptr;
+    leaf->right = nullptr;
+    return leaf;
 }
 
-void test1(const char* msg)
-{
-  setNode(a,1,NULL, NULL);
-  cout << msg << ": " <<   equalPaths(a) << endl;
+int main() {
+    // Test 1: Empty tree (should return true)
+    bool result1 = equalPaths(nullptr);
+    cout << "Test 1 (Empty tree): " << (result1 ? "Passed" : "Failed") << endl;
+
+    // Test 2: Single node (should return true)
+    Node* root2 = createLeaf();
+    bool result2 = equalPaths(root2);
+    cout << "Test 2 (Single node): " << (result2 ? "Passed" : "Failed") << endl;
+
+    /** Test 3: Tree with equal paths
+    *      A
+    *     / \
+    *     B   C
+    */
+    Node* root3 = createLeaf();
+    root3->left = createLeaf();
+    root3->right = createLeaf();
+    bool result3 = equalPaths(root3);
+    cout << "Test 3 (Equal paths): " << (result3 ? "Passed" : "Failed") << endl;
+
+    /** Test 4: Tree with unequal paths
+    *       A
+    *     /
+    *     B
+    *    /
+    *   C
+    */
+    Node* root4 = createLeaf();
+    root4->left = createLeaf();
+    root4->right = createLeaf();
+    root4->left->left = createLeaf();
+    bool result4 = equalPaths(root4);
+    cout << "Test 4 (Unequal paths): " << (!result4 ? "Passed" : "Failed") << endl;
+
+    return 0;
 }
-
-void test2(const char* msg)
-{
-  setNode(a,1,b,NULL);
-  setNode(b,2,NULL,NULL);
-  cout << msg << ": " <<   equalPaths(a) << endl;
-}
-
-void test3(const char* msg)
-{
-  setNode(a,1,b,c);
-  setNode(b,2,NULL,NULL);
-  setNode(c,3,NULL,NULL);
-  cout << msg << ": " <<   equalPaths(a) << endl;
-}
-
-void test4(const char* msg)
-{
-  setNode(a,1,NULL,c);
-  setNode(c,3,NULL,NULL);
-  cout << msg << ": " <<   equalPaths(a) << endl;
-}
-
-void test5(const char* msg)
-{
-  setNode(a,1,b,c);
-  setNode(b,2,NULL,d);
-  setNode(c,3,NULL,NULL);
-  setNode(d,4,NULL,NULL);
-  cout << msg << ": " <<   equalPaths(a) << endl;
-}
-
-int main()
-{
-  a = new Node(1);
-  b = new Node(2);
-  c = new Node(3);
-  d = new Node(4);
-
-  test1("Test1");
-  test2("Test2");
-  test3("Test3");
-  test4("Test4");
-  test5("Test5");
- 
-  delete a;
-  delete b;
-  delete c;
-  delete d;
-}
-
